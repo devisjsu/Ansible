@@ -1,0 +1,18 @@
+---
+- hosts: webservers
+  become: yes
+  vars:
+    http_port: 80
+  tasks:
+    - name: install apache2
+      apt: name=apache2 update_cache=yes state=latest
+    - name: Start and enable httpd service
+      service:
+        name: apache2
+        enabled: true
+        state: started      
+    - name : Print helloworld from SJSU on VM2 and VM3 webserver(/var/www/html/index.html)
+      copy:
+         dest: /var/www/html/index.html
+         content:
+            "hello world from SJSU"

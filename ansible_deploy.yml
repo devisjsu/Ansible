@@ -1,0 +1,26 @@
+---
+
+- name: Deploy webservers on VM1 and VM2
+  hosts: webservers
+  #ignore_unreachable: yes  
+  become: yes
+  tasks:
+  - name: Ensure httpd is at the latest version
+    apt:
+      name: apache2
+      state: latest
+  - name: Ensure httpd is running on VM2 and VM3
+    service:
+         name: apache2
+         enabled: true
+         state: started
+  - name: open firewall
+    community.general.ufw:
+         rule: allow
+         port: 80
+         proto: tcp         
+  - name : Print helloworld from SJSU on VM2 and VM3 webserver(/var/www/html/index.html)
+    copy:
+       dest: /var/www/html/index.html
+       content: 
+         "hello world from SJSU:)"  

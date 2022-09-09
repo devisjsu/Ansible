@@ -1,0 +1,15 @@
+---
+
+- name: Undeploy webservers on vm1 and vm2
+  hosts: webservers
+  become: yes
+  tasks:
+  - name: stop httpd
+    service:
+          name: apache2
+          enabled: false
+          state: stopped
+  - name: remove webservers from vm2 and vm3
+    apt:
+          name: apache2
+          state: absent    
